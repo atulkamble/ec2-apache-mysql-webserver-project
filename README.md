@@ -45,6 +45,9 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
 
 3. **Install MySQL**:
    ```bash
+sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm
+sudo rpm -ivh mysql80-community-release-el7-5.noarch.rpm
+   
    sudo dnf install mariadb105
    mysql --version
    sudo yum install mysql-server -y  # For Amazon Linux
