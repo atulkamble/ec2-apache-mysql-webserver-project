@@ -44,9 +44,9 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
    ```
 
 3. **Install MySQL**:
-   ```bash
-sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm
-sudo rpm -ivh mysql80-community-release-el7-5.noarch.rpm
+   ``
+   sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm
+   sudo rpm -ivh mysql80-community-release-el7-5.noarch.rpm`
    
    sudo dnf install mariadb105
    mysql --version
@@ -54,7 +54,7 @@ sudo rpm -ivh mysql80-community-release-el7-5.noarch.rpm
    sudo apt install mysql-server -y  # For Ubuntu
    ```
 
-4. **Start and Enable Apache2 and MySQL**:
+5. **Start and Enable Apache2 and MySQL**:
    ```bash
    sudo systemctl start httpd  # For Amazon Linux
    sudo systemctl start apache2  # For Ubuntu
@@ -67,14 +67,14 @@ sudo rpm -ivh mysql80-community-release-el7-5.noarch.rpm
    sudo systemctl enable mysql  # For Ubuntu
    ```
 
-5. **Secure MySQL Installation**:
+6. **Secure MySQL Installation**:
    - Run the MySQL security script:
      ```bash
      sudo mysql_secure_installation
      ```
    - Follow the prompts to set a root password and secure the installation.
 
-6. **Verify Apache2 and MySQL Installation**:
+7. **Verify Apache2 and MySQL Installation**:
    - Open your browser and navigate to your EC2 instance's public IP address:
      ```
      http://<your-ec2-public-ip>
