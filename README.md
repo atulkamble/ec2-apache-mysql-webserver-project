@@ -45,6 +45,8 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
 
 3. **Install MySQL**:
    ```bash
+   sudo dnf install mariadb105
+   mysql --version
    sudo yum install mysql-server -y  # For Amazon Linux
    sudo apt install mysql-server -y  # For Ubuntu
    ```
