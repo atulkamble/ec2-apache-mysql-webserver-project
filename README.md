@@ -1,6 +1,4 @@
-## 📦 **Project Title:**
-
-**EC2 Apache2 MySQL Web App Deployment**
+## 📦 **Project Title: EC2 Apache2 MySQL Web App Deployment **
 
 Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database** involves setting up a web server, a database, and a web application that interacts with the database.
 
