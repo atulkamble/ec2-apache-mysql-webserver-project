@@ -32,8 +32,6 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
    ssh -i "webserver.pem" ubuntu@<your-ec2-public-ip>
 ````
 
----
-
 ## 📌 Step 2: Install Apache2, PHP, and MySQL
 
 1. **Update the System**
@@ -116,7 +114,6 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
    EXIT;
    ```
 
----
 
 ## 📌 Step 4: Deploy a PHP Web Application
 
@@ -210,7 +207,6 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
    * Visit `http://<your-ec2-public-ip>` in a browser.
    * Use the form to add users and view the user list.
 
----
 
 ## 📌 Step 5: (Optional) Automate Deployment with Script
 
@@ -266,13 +262,11 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
    ./deploy.sh
    ```
 
----
 
 ## 📌 Step 6: Clean Up
 
 * **Stop/Terminate EC2 Instance** when the project is complete to avoid charges.
 
----
 
 ## ✅ Conclusion
 
