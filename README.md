@@ -1,97 +1,102 @@
-Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database** involves setting up a web server, a database, and a web application that interacts with the database. 
+# 📦 EC2 Apache2 MySQL Project Setup
+
+Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database** involves setting up a web server, a database, and a web application that interacts with the database.
+
 ---
 
-## **Step 1: Set Up an EC2 Instance**
+## 📌 Step 1: Set Up an EC2 Instance
 
-1. **Log in to AWS Console**:
+1. **Log in to AWS Console**
+
    - Go to the [AWS Management Console](https://aws.amazon.com/console/).
    - Navigate to the **EC2** service.
 
-2. **Launch an EC2 Instance**:
+2. **Launch an EC2 Instance**
+
    - Click **Launch Instance**.
    - Choose an Amazon Machine Image (AMI), such as **Ubuntu**.
    - Select an instance type (e.g., `t2.micro` for free tier).
-   - Configure instance details (default settings are fine for this project).
+   - Configure instance details (default settings are fine).
    - Add storage (default 8GB is sufficient).
    - Add tags (optional).
    - Configure the security group:
-     - Add rules to allow HTTP (port 80), HTTPS (port 443), SSH (port 22), and MySQL (port 3306) traffic.
+     - Allow **HTTP (80)**, **HTTPS (443)**, **SSH (22)**, and **MySQL (3306)**.
    - Review and launch the instance.
-   - Create and download a key pair (`webserver.pem` file) to access the instance via SSH.
+   - Create and download a key pair (`webserver.pem`) for SSH access.
 
-3. **Connect to the EC2 Instance**:
-   - Use SSH to connect to your instance:
-     ```bash
-     cd Downloads
-     chmod 400 webserver.pem
-     ssh -i "webserver.pem" ubuntu@ec2-54-221-180-88.compute-1.amazonaws.com
-     ```
+3. **Connect to the EC2 Instance**
+
+   ```bash
+   cd Downloads
+   chmod 400 webserver.pem
+   ssh -i "webserver.pem" ubuntu@<your-ec2-public-ip>
+````
+
 ---
 
-## **Step 2: Install Apache2 and MySQL**
+## 📌 Step 2: Install Apache2, PHP, and MySQL
 
-1. **Update the System**:
+1. **Update the System**
+
    ```bash
    sudo apt update && sudo apt upgrade -y
-   ```
-   **Set Password**:
-   ```
-   sudo -i passwd 
-   ```
-1. **Install PHP**:
-   ```bash
-   sudo apt install php libapache2-mod-php php-mysql -y  
-   ```
-2. **Install Apache2**:
-   ```bash
-   sudo apt install apache2 -y  
+   sudo -i passwd
    ```
 
-3. **Install MySQL**:
+2. **Install PHP**
+
+   ```bash
+   sudo apt install php libapache2-mod-php php-mysql -y
    ```
+
+3. **Install Apache2**
+
+   ```bash
+   sudo apt install apache2 -y
+   ```
+
+4. **Install MySQL**
+
+   ```bash
    sudo apt install mysql-server -y
    mysql --version
    ```
 
-5. **Start and Enable Apache2 and MySQL**:
+5. **Start and Enable Services**
+
    ```bash
    sudo systemctl start apache2
    sudo systemctl enable apache2
    sudo systemctl status apache2
 
-   sudo systemctl start mysql  
-   sudo systemctl enable mysql  
+   sudo systemctl start mysql
+   sudo systemctl enable mysql
    sudo systemctl status mysql
    ```
 
-6. **Secure MySQL Installation**:
-   - Run the MySQL security script:
-     ```bash
-     sudo mysql_secure_installation
-     ```
-   - Follow the prompts to set a root password and secure the installation.
+6. **Secure MySQL Installation**
 
-7. **Verify Apache2 and MySQL Installation**:
-   - Open your browser and navigate to your EC2 instance's public IP address:
-     ```
-     http://<your-ec2-public-ip>
-     ```
-   - You should see the Apache2 default landing page.
+   ```bash
+   sudo mysql_secure_installation
+   ```
+
+7. **Verify Apache Installation**
+
+   * Open browser: `http://<your-ec2-public-ip>`
+   * You should see Apache's default landing page.
 
 ---
 
-## **Step 3: Set Up MySQL Database**
+## 📌 Step 3: Set Up MySQL Database
 
-1. **Log in to MySQL**:
+1. **Log in to MySQL**
+
    ```bash
    sudo mysql -u root -p
    ```
-   OR
-   ```bash
-   sudo mysql 
-   ```
 
-2. **Create a Database and User**:
+2. **Create a Database and User**
+
    ```sql
    CREATE DATABASE myproject;
    CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'mypassword';
@@ -99,237 +104,177 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
    FLUSH PRIVILEGES;
    ```
 
-3. **Create a Table**:
-   - Use the database and create a table:
-     ```sql
-     USE myproject;
-     CREATE TABLE users (
-         id INT AUTO_INCREMENT PRIMARY KEY,
-         name VARCHAR(50) NOT NULL,
-         email VARCHAR(100) NOT NULL
-     );
-     EXIT;
-     ```
+3. **Create a Table**
+
+   ```sql
+   USE myproject;
+   CREATE TABLE users (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       name VARCHAR(50) NOT NULL,
+       email VARCHAR(100) NOT NULL
+   );
+   EXIT;
+   ```
 
 ---
 
-## **Step 4: Deploy a PHP Web Application**
+## 📌 Step 4: Deploy a PHP Web Application
 
-1. **Create a Project Directory**:
+1. **Create Project Directory**
+
    ```bash
    sudo mkdir /var/www/html/myproject
    sudo chown -R $USER:$USER /var/www/html/myproject
-   sudo chmod 755 /var/www/html/ 
+   sudo chmod 755 /var/www/html/
    cd /var/www/html
    sudo rm index.html
-   sudo touch index.html
-   sudo nano index.html
+   sudo touch index.php
+   sudo nano index.php
    ```
 
-2. **Create a PHP File**:
-   - Create an `index.php` file:
-     ```bash
-     nano index.php
-     ```
-   - Add the following PHP code:
-     ```php
-     <!DOCTYPE html>
-     <html lang="en">
-     <head>
-         <meta charset="UTF-8">
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <title>My EC2 Project</title>
-     </head>
-     <body>
-         <h1>Welcome to My EC2 Web Server!</h1>
-         <p>This is a simple PHP application connected to MySQL.</p>
+2. **Add PHP Code**
 
-         <h2>Add User</h2>
-         <form method="POST" action="">
-             Name: <input type="text" name="name" required><br>
-             Email: <input type="email" name="email" required><br>
-             <input type="submit" name="submit" value="Add User">
-         </form>
+   Paste the following code into `index.php`:
 
-         <h2>User List</h2>
-         <?php
-         $servername = "localhost";
-         $username = "myuser";
-         $password = "mypassword";
-         $dbname = "myproject";
+   ```php
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>My EC2 Project</title>
+   </head>
+   <body>
+       <h1>Welcome to My EC2 Web Server!</h1>
+       <p>This is a simple PHP application connected to MySQL.</p>
 
-         // Create connection
-         $conn = new mysqli($servername, $username, $password, $dbname);
+       <h2>Add User</h2>
+       <form method="POST" action="">
+           Name: <input type="text" name="name" required><br>
+           Email: <input type="email" name="email" required><br>
+           <input type="submit" name="submit" value="Add User">
+       </form>
 
-         // Check connection
-         if ($conn->connect_error) {
-             die("Connection failed: " . $conn->connect_error);
-         }
+       <h2>User List</h2>
+       <?php
+       $servername = "localhost";
+       $username = "myuser";
+       $password = "mypassword";
+       $dbname = "myproject";
 
-         // Insert data
-         if (isset($_POST['submit'])) {
-             $name = $_POST['name'];
-             $email = $_POST['email'];
+       $conn = new mysqli($servername, $username, $password, $dbname);
 
-             $sql = "INSERT INTO users (name, email) VALUES ('$name', '$email')";
-             if ($conn->query($sql) === TRUE) {
-                 echo "<p>User added successfully!</p>";
-             } else {
-                 echo "<p>Error: " . $sql . "<br>" . $conn->error . "</p>";
-             }
-         }
+       if ($conn->connect_error) {
+           die("Connection failed: " . $conn->connect_error);
+       }
 
-         // Fetch data
-         $sql = "SELECT id, name, email FROM users";
-         $result = $conn->query($sql);
+       if (isset($_POST['submit'])) {
+           $name = $_POST['name'];
+           $email = $_POST['email'];
 
-         if ($result->num_rows > 0) {
-             echo "<ul>";
-             while ($row = $result->fetch_assoc()) {
-                 echo "<li>" . $row["name"] . " - " . $row["email"] . "</li>";
-             }
-             echo "</ul>";
-         } else {
-             echo "<p>No users found.</p>";
-         }
+           $sql = "INSERT INTO users (name, email) VALUES ('$name', '$email')";
+           if ($conn->query($sql) === TRUE) {
+               echo "<p>User added successfully!</p>";
+           } else {
+               echo "<p>Error: " . $sql . "<br>" . $conn->error . "</p>";
+           }
+       }
 
-         $conn->close();
-         ?>
-     </body>
-     </html>
-     ```
+       $sql = "SELECT id, name, email FROM users";
+       $result = $conn->query($sql);
 
-3. **Restart Apache2**:
+       if ($result->num_rows > 0) {
+           echo "<ul>";
+           while ($row = $result->fetch_assoc()) {
+               echo "<li>" . $row["name"] . " - " . $row["email"] . "</li>";
+           }
+           echo "</ul>";
+       } else {
+           echo "<p>No users found.</p>";
+       }
+
+       $conn->close();
+       ?>
+   </body>
+   </html>
+   ```
+
+3. **Restart Apache**
+
    ```bash
    sudo systemctl restart apache2
    ```
 
-4. **Verify the Web Application**:
-   - Open your browser and navigate to:
-     ```
-     http://<your-ec2-public-ip>
-     ```
-   - You should see the PHP application with a form to add users and a list of users.
+4. **Test Application**
+
+   * Visit `http://<your-ec2-public-ip>` in a browser.
+   * Use the form to add users and view the user list.
 
 ---
 
-## **Step 5: (Optional) Automate Deployment with a Script**
+## 📌 Step 5: (Optional) Automate Deployment with Script
 
-1. **Create a Deployment Script**:
-   - Create a file called `deploy.sh`:
-     ```bash
-     nano deploy.sh
-     ```
-   - Add the following code:
-     ```bash
-     #!/bin/bash
+1. **Create Deployment Script**
 
-     # Update the system
-     sudo yum update -y
+   ```bash
+   nano deploy.sh
+   ```
 
-     # Install Apache2, MySQL, and PHP
-     sudo yum install httpd mysql-server php php-mysqlnd -y
+2. **Add Script Content**
 
-     # Start and enable services
-     sudo systemctl start httpd
-     sudo systemctl start mysqld
-     sudo systemctl enable httpd
-     sudo systemctl enable mysqld
+   ```bash
+   #!/bin/bash
 
-     # Secure MySQL installation
-     sudo mysql_secure_installation
+   sudo yum update -y
+   sudo yum install httpd mysql-server php php-mysqlnd -y
 
-     # Create project directory
-     sudo mkdir -p /var/www/html/myproject
-     sudo chown -R $USER:$USER /var/www/html/myproject
+   sudo systemctl start httpd
+   sudo systemctl start mysqld
+   sudo systemctl enable httpd
+   sudo systemctl enable mysqld
 
-     # Deploy PHP file
-     echo '<!DOCTYPE html>
-     <html lang="en">
-     <head>
-         <meta charset="UTF-8">
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <title>My EC2 Project</title>
-     </head>
-     <body>
-         <h1>Welcome to My EC2 Web Server!</h1>
-         <p>This is a simple PHP application connected to MySQL.</p>
+   sudo mysql_secure_installation
 
-         <h2>Add User</h2>
-         <form method="POST" action="">
-             Name: <input type="text" name="name" required><br>
-             Email: <input type="email" name="email" required><br>
-             <input type="submit" name="submit" value="Add User">
-         </form>
+   sudo mkdir -p /var/www/html/myproject
+   sudo chown -R $USER:$USER /var/www/html/myproject
 
-         <h2>User List</h2>
-         <?php
-         $servername = "localhost";
-         $username = "myuser";
-         $password = "mypassword";
-         $dbname = "myproject";
+   echo '<!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>My EC2 Project</title>
+   </head>
+   <body>
+       <h1>Welcome to My EC2 Web Server!</h1>
+       <p>This is a simple PHP application connected to MySQL.</p>
+   </body>
+   </html>' > /var/www/html/myproject/index.php
 
-         // Create connection
-         $conn = new mysqli($servername, $username, $password, $dbname);
+   sudo systemctl restart httpd
+   ```
 
-         // Check connection
-         if ($conn->connect_error) {
-             die("Connection failed: " . $conn->connect_error);
-         }
+3. **Make Script Executable**
 
-         // Insert data
-         if (isset($_POST['submit'])) {
-             $name = $_POST['name'];
-             $email = $_POST['email'];
-
-             $sql = "INSERT INTO users (name, email) VALUES ('$name', '$email')";
-             if ($conn->query($sql) === TRUE) {
-                 echo "<p>User added successfully!</p>";
-             } else {
-                 echo "<p>Error: " . $sql . "<br>" . $conn->error . "</p>";
-             }
-         }
-
-         // Fetch data
-         $sql = "SELECT id, name, email FROM users";
-         $result = $conn->query($sql);
-
-         if ($result->num_rows > 0) {
-             echo "<ul>";
-             while ($row = $result->fetch_assoc()) {
-                 echo "<li>" . $row["name"] . " - " . $row["email"] . "</li>";
-             }
-             echo "</ul>";
-         } else {
-             echo "<p>No users found.</p>";
-         }
-
-         $conn->close();
-         ?>
-     </body>
-     </html>' > /var/www/html/myproject/index.php
-
-     # Restart Apache2
-     sudo systemctl restart httpd
-     ```
-
-2. **Make the Script Executable**:
    ```bash
    chmod +x deploy.sh
    ```
 
-3. **Run the Script**:
+4. **Run the Script**
+
    ```bash
    ./deploy.sh
    ```
 
 ---
 
-## **Step 6: Clean Up**
+## 📌 Step 6: Clean Up
 
-- **Stop or Terminate the EC2 Instance**:
-  - If you're done with the project, stop or terminate the EC2 instance to avoid unnecessary charges.
+* **Stop/Terminate EC2 Instance** when the project is complete to avoid charges.
 
 ---
 
-This project demonstrates how to set up an EC2 instance, install and configure Apache2 and MySQL, and deploy a PHP web application that interacts with the database. 
+## ✅ Conclusion
+
+This project demonstrates how to set up an **EC2 instance**, install **Apache2** and **MySQL**, and deploy a **PHP web application** connected to a database.
+
