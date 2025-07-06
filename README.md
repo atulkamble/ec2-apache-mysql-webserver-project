@@ -2,8 +2,6 @@
 
 Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database** involves setting up a web server, a database, and a web application that interacts with the database.
 
----
-
 ## 📌 Step 1: Set Up an EC2 Instance
 
 1. **Log in to AWS Console**
@@ -82,8 +80,6 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
 
    * Open browser: `http://<your-ec2-public-ip>`
    * You should see Apache's default landing page.
-
----
 
 ## 📌 Step 3: Set Up MySQL Database
 
