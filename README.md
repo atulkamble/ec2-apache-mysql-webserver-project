@@ -204,62 +204,7 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
    * Use the form to add users and view the user list.
 
 
-## 📌 Step 5: (Optional) Automate Deployment with Script
-
-1. **Create Deployment Script**
-
-   ```bash
-   nano deploy.sh
-   ```
-
-2. **Add Script Content**
-
-   ```bash
-   #!/bin/bash
-
-   sudo yum update -y
-   sudo yum install httpd mysql-server php php-mysqlnd -y
-
-   sudo systemctl start httpd
-   sudo systemctl start mysqld
-   sudo systemctl enable httpd
-   sudo systemctl enable mysqld
-
-   sudo mysql_secure_installation
-
-   sudo mkdir -p /var/www/html/myproject
-   sudo chown -R $USER:$USER /var/www/html/myproject
-
-   echo '<!DOCTYPE html>
-   <html lang="en">
-   <head>
-       <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>My EC2 Project</title>
-   </head>
-   <body>
-       <h1>Welcome to My EC2 Web Server!</h1>
-       <p>This is a simple PHP application connected to MySQL.</p>
-   </body>
-   </html>' > /var/www/html/myproject/index.php
-
-   sudo systemctl restart httpd
-   ```
-
-3. **Make Script Executable**
-
-   ```bash
-   chmod +x deploy.sh
-   ```
-
-4. **Run the Script**
-
-   ```bash
-   ./deploy.sh
-   ```
-
-
-## 📌 Step 6: Clean Up
+## 📌 Step 5: Clean Up
 
 * **Stop/Terminate EC2 Instance** when the project is complete to avoid charges.
 
