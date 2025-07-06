@@ -1,5 +1,4 @@
-Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQL database** involves setting up a web server, a database, and a web application that interacts with the database. Below is a step-by-step guide to building this project, including all necessary code.
-
+Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database** involves setting up a web server, a database, and a web application that interacts with the database. 
 ---
 
 ## **Step 1: Set Up an EC2 Instance**
@@ -10,7 +9,7 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
 
 2. **Launch an EC2 Instance**:
    - Click **Launch Instance**.
-   - Choose an Amazon Machine Image (AMI), such as **Amazon Linux 2** or **Ubuntu**.
+   - Choose an Amazon Machine Image (AMI), such as **Ubuntu**.
    - Select an instance type (e.g., `t2.micro` for free tier).
    - Configure instance details (default settings are fine for this project).
    - Add storage (default 8GB is sufficient).
@@ -18,52 +17,51 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
    - Configure the security group:
      - Add rules to allow HTTP (port 80), HTTPS (port 443), SSH (port 22), and MySQL (port 3306) traffic.
    - Review and launch the instance.
-   - Create and download a key pair (`.pem` file) to access the instance via SSH.
+   - Create and download a key pair (`webserver.pem` file) to access the instance via SSH.
 
 3. **Connect to the EC2 Instance**:
    - Use SSH to connect to your instance:
      ```bash
-     ssh -i /path/to/your-key.pem ec2-user@your-ec2-public-ip
+     cd Downloads
+     chmod 400 webserver.pem
+     ssh -i "webserver.pem" ubuntu@ec2-54-221-180-88.compute-1.amazonaws.com
      ```
-   - Replace `ec2-user` with `ubuntu` if you're using an Ubuntu AMI.
-
 ---
 
 ## **Step 2: Install Apache2 and MySQL**
 
 1. **Update the System**:
    ```bash
-   sudo yum update -y  # For Amazon Linux
-   sudo apt update && sudo apt upgrade -y  # For Ubuntu
+   sudo apt update && sudo apt upgrade -y
    ```
-
+   **Set Password**:
+   ```
+   sudo -i passwd 
+   ```
+1. **Install PHP**:
+   ```bash
+   sudo apt install php libapache2-mod-php php-mysql -y  
+   ```
 2. **Install Apache2**:
    ```bash
-   sudo yum install httpd -y  # For Amazon Linux
-   sudo apt install apache2 -y  # For Ubuntu
+   sudo apt install apache2 -y  
    ```
 
 3. **Install MySQL**:
    ```
-   sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm
-   sudo rpm -ivh mysql80-community-release-el7-5.noarch.rpm
-   sudo dnf install mariadb105
+   sudo apt install mysql-server -y
    mysql --version
-   sudo yum install mysql-server -y  # For Amazon Linux
-   sudo apt install mysql-server -y  # For Ubuntu
    ```
 
 5. **Start and Enable Apache2 and MySQL**:
    ```bash
-   sudo systemctl start httpd  # For Amazon Linux
-   sudo systemctl start apache2  # For Ubuntu
-   sudo systemctl start mysqld  # For Amazon Linux
-   sudo systemctl start mysql  # For Ubuntu
+   sudo systemctl start apache2
+   sudo systemctl enable apache2
+   sudo systemctl status apache2
 
-   sudo systemctl enable httpd  # For Amazon Linux
-   sudo systemctl enable apache2  # For Ubuntu
-   sudo systemctl enable mysqld  # For Amazon Linux
-   sudo systemctl enable mysql  # For Ubuntu
+   sudo systemctl start mysql  
+   sudo systemctl enable mysql  
+   sudo systemctl status mysql
    ```
 
 6. **Secure MySQL Installation**:
@@ -88,6 +86,10 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
    ```bash
    sudo mysql -u root -p
    ```
+   OR
+   ```bash
+   sudo mysql 
+   ```
 
 2. **Create a Database and User**:
    ```sql
@@ -95,14 +97,9 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
    CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'mypassword';
    GRANT ALL PRIVILEGES ON myproject.* TO 'myuser'@'localhost';
    FLUSH PRIVILEGES;
-   EXIT;
    ```
 
 3. **Create a Table**:
-   - Log in as the new user:
-     ```bash
-     mysql -u myuser -p
-     ```
    - Use the database and create a table:
      ```sql
      USE myproject;
@@ -118,20 +115,18 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
 
 ## **Step 4: Deploy a PHP Web Application**
 
-1. **Install PHP**:
-   ```bash
-   sudo yum install php php-mysqlnd -y  # For Amazon Linux
-   sudo apt install php libapache2-mod-php php-mysql -y  # For Ubuntu
-   ```
-
-2. **Create a Project Directory**:
+1. **Create a Project Directory**:
    ```bash
    sudo mkdir /var/www/html/myproject
    sudo chown -R $USER:$USER /var/www/html/myproject
-   cd /var/www/html/myproject
+   sudo chmod 755 /var/www/html/ 
+   cd /var/www/html
+   sudo rm index.html
+   sudo touch index.html
+   sudo nano index.html
    ```
 
-3. **Create a PHP File**:
+2. **Create a PHP File**:
    - Create an `index.php` file:
      ```bash
      nano index.php
@@ -204,16 +199,15 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
      </html>
      ```
 
-4. **Restart Apache2**:
+3. **Restart Apache2**:
    ```bash
-   sudo systemctl restart httpd  # For Amazon Linux
-   sudo systemctl restart apache2  # For Ubuntu
+   sudo systemctl restart apache2
    ```
 
-5. **Verify the Web Application**:
+4. **Verify the Web Application**:
    - Open your browser and navigate to:
      ```
-     http://<your-ec2-public-ip>/myproject
+     http://<your-ec2-public-ip>
      ```
    - You should see the PHP application with a form to add users and a list of users.
 
@@ -338,4 +332,4 @@ Creating a full project with an **EC2 instance**, **Apache2 server**, and **MySQ
 
 ---
 
-This project demonstrates how to set up an EC2 instance, install and configure Apache2 and MySQL, and deploy a PHP web application that interacts with the database. You can expand this project by adding user authentication, a backend framework, or CI/CD pipelines for automated deployments.
+This project demonstrates how to set up an EC2 instance, install and configure Apache2 and MySQL, and deploy a PHP web application that interacts with the database. 
