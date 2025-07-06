@@ -28,7 +28,7 @@ Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database*
    cd Downloads
    chmod 400 webserver.pem
    ssh -i "webserver.pem" ubuntu@<your-ec2-public-ip>
-````
+   ```
 
 ## 📌 Step 2: Install Apache2, PHP, and MySQL
 
