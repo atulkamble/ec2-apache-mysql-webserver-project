@@ -1,3 +1,45 @@
+# 📦 EC2 Apache2 MySQL Web App Deployment
+
+🚀 Deployed a **full-stack PHP web application** on AWS by integrating an **EC2 instance**, **Apache2 web server**, and **MySQL database**. This project demonstrates setting up a scalable web server, configuring a secure database, and deploying a dynamic web application that allows user interaction with persistent storage.
+
+---
+
+## 🔑 **Key Highlights**
+
+* ✅ **Provisioned EC2 Instance** (Ubuntu) with proper security groups (HTTP, HTTPS, SSH, MySQL).
+* ✅ Installed and configured **Apache2, PHP, and MySQL** on the instance.
+* ✅ Secured and initialized a **MySQL database** with a `users` table for dynamic data storage.
+* ✅ Built a **PHP web app** with a simple UI to add and display users from the MySQL database.
+* ✅ Ensured persistence by connecting **frontend forms → backend PHP logic → MySQL database**.
+* ✅ Validated deployment via browser using EC2 public IP.
+
+---
+
+## ⚙️ **Tech Stack**
+
+* **AWS EC2** (Compute)
+* **Apache2** (Web Server)
+* **MySQL** (Database)
+* **PHP** (Application Layer)
+* **Linux (Ubuntu)**
+
+---
+
+## 📸 **Project Flow**
+
+1. **EC2 Setup** → Launch Ubuntu instance + configure security groups
+2. **Web Server & DB Installation** → Apache2, PHP, MySQL installation & configuration
+3. **Database Setup** → Create database, user, and `users` table
+4. **App Deployment** → Deploy `index.php` with forms and database connectivity
+5. **Testing** → Add users & fetch results in real-time from the MySQL database
+
+---
+
+## 🎯 **Outcome**
+
+This project showcases **end-to-end deployment** of a dynamic PHP application on AWS with full **LAMP stack integration**. It highlights **cloud infrastructure skills, server setup, database management, and web app deployment** — all on a scalable and secure environment.
+
+
 ## 📦 Project Title: EC2 Apache2 MySQL Web App Deployment
 
 Full project with an **EC2 instance**, **Apache2 server**, and **MySQL database** involves setting up a web server, a database, and a web application that interacts with the database.
